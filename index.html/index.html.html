@@ -2,60 +2,186 @@
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <title>Professional Layout Designer - Anchor Fixed</title>
+    <title>Blueprint Pro Designer | v2.0</title>
     <style>
         :root {
-            --primary-blue: #0066ff;
+            --primary-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-pink: #f472b6;
             --bg-dark: #0f172a;
-            --sidebar-bg: #ffffff;
+            --sidebar-bg: #f8fafc;
             --text-main: #1e293b;
+            --border-color: #e2e8f0;
         }
 
-        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg-dark); color: white; margin: 0; display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
+        body { 
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; 
+            background: var(--bg-dark); 
+            color: white; 
+            margin: 0; 
+            display: flex; 
+            flex-direction: column; 
+            height: 100vh; 
+            overflow: hidden; 
+        }
 
-        header { background: white; padding: 10px 25px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.3); z-index: 100; }
-        header h2 { margin: 0; color: var(--primary-blue); font-size: 16px; }
-        .upload-btn { background: var(--primary-blue); color: white; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+        /* Header Styles */
+        header { 
+            background: white; 
+            padding: 8px 20px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); 
+            z-index: 100; 
+        }
 
-        .main-layout { display: flex; flex: 1; }
+        .brand { display: flex; align-items: center; gap: 12px; }
+        .brand img { height: 32px; width: auto; border-radius: 6px; }
+        .brand h2 { margin: 0; color: var(--bg-dark); font-size: 18px; letter-spacing: -0.5px; }
+        .brand span { color: var(--primary-blue); font-weight: 800; }
 
-        #viewport { position: relative; flex: 1; background: #020617; display: flex; align-items: center; justify-content: center; padding: 40px; cursor: crosshair; }
-        #container { position: relative; border-radius: 4px; overflow: hidden; box-shadow: 0 0 40px rgba(0,0,0,0.5); }
-        video { display: block; max-height: 65vh; max-width: 100%; border: 1px solid #334155; }
+        .upload-btn { 
+            background: var(--primary-blue); 
+            color: white; 
+            padding: 8px 16px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .upload-btn:hover { background: #2563eb; transform: translateY(-1px); }
+
+        /* Main Layout */
+        .main-layout { display: flex; flex: 1; overflow: hidden; }
+
+        #viewport { 
+            position: relative; 
+            flex: 1; 
+            background: #020617; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 20px; 
+            cursor: crosshair; 
+            background-image: radial-gradient(#1e293b 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        #container { 
+            position: relative; 
+            border-radius: 8px; 
+            overflow: hidden; 
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            border: 2px solid #334155;
+        }
+
+        video { display: block; max-height: 75vh; max-width: 100%; }
         canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
 
-        /* Sidebar */
-        .sidebar { width: 350px; background: var(--sidebar-bg); color: var(--text-main); padding: 15px; display: flex; flex-direction: column; box-shadow: -5px 0 20px rgba(0,0,0,0.2); overflow-y: auto; }
-        .section-title { font-weight: bold; font-size: 11px; color: #64748b; margin: 15px 0 8px; border-bottom: 1px solid #e2e8f0; padding-bottom: 3px; }
+        /* Sidebar Styles */
+        .sidebar { 
+            width: 320px; 
+            background: var(--sidebar-bg); 
+            color: var(--text-main); 
+            padding: 20px; 
+            display: flex; 
+            flex-direction: column; 
+            box-shadow: -10px 0 15px -3px rgba(0,0,0,0.1); 
+            overflow-y: auto; 
+        }
 
-        .tab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5px; }
-        .tab { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 8px; cursor: pointer; border-radius: 4px; font-weight: 600; font-size: 11px; color: #475569; }
-        .tab.active { background: var(--primary-blue); color: white; }
+        .section-title { 
+            font-weight: 800; 
+            font-size: 11px; 
+            color: #94a3b8; 
+            margin: 20px 0 10px; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .section-title::after { content: ""; flex: 1; height: 1px; background: var(--border-color); }
 
-        .layer-box { display: flex; gap: 5px; margin-bottom: 10px; }
-        .layer-btn { flex: 1; padding: 8px; border-radius: 4px; border: 2px solid #e2e8f0; background: white; cursor: pointer; font-size: 11px; font-weight: bold; }
-        .layer-btn.active.lA { border-color: #00cc88; color: #00cc88; }
-        .layer-btn.active.lB { border-color: #ff00ff; color: #ff00ff; }
+        .tab-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+        .tab { 
+            background: white; 
+            border: 1px solid var(--border-color); 
+            padding: 10px; 
+            cursor: pointer; 
+            border-radius: 6px; 
+            font-weight: 600; 
+            font-size: 12px; 
+            color: #64748b;
+            transition: 0.2s;
+        }
+        .tab:hover { border-color: var(--primary-blue); color: var(--primary-blue); }
+        .tab.active { background: var(--primary-blue); color: white; border-color: var(--primary-blue); box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.3); }
 
-        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-        .data-card { background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px solid #e2e8f0; }
-        .data-card label { display: block; font-size: 9px; color: #94a3b8; margin-bottom: 2px; }
-        .data-card span { font-family: monospace; font-size: 18px; font-weight: bold; color: var(--primary-blue); }
+        .layer-box { display: flex; gap: 8px; }
+        .layer-btn { 
+            flex: 1; 
+            padding: 10px; 
+            border-radius: 6px; 
+            border: 2px solid var(--border-color); 
+            background: white; 
+            cursor: pointer; 
+            font-size: 12px; 
+            font-weight: 800; 
+            transition: 0.2s;
+        }
+        .layer-btn.active.lA { border-color: var(--accent-green); color: var(--accent-green); background: #f0fdf4; }
+        .layer-btn.active.lB { border-color: var(--accent-pink); color: var(--accent-pink); background: #fdf2f8; }
 
-        .summary-table { width: 100%; border-collapse: collapse; font-size: 10px; margin-top: 10px; }
-        .summary-table th { background: #f1f5f9; padding: 5px; color: #475569; }
-        .summary-table td { padding: 5px; border-bottom: 1px solid #f1f5f9; text-align: center; }
+        .data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .data-card { 
+            background: white; 
+            padding: 12px; 
+            border-radius: 8px; 
+            border: 1px solid var(--border-color); 
+            transition: 0.2s;
+        }
+        .data-card:hover { border-color: var(--primary-blue); }
+        .data-card label { display: block; font-size: 10px; color: #94a3b8; margin-bottom: 4px; font-weight: bold; }
+        .data-card span { font-family: 'Courier New', monospace; font-size: 20px; font-weight: 700; color: var(--bg-dark); }
 
-        .btn-clear { background: #ff4d4d; color: white; border: none; padding: 10px; border-radius: 6px; cursor: pointer; font-weight: bold; margin-top: 15px; width: 100%; }
-        input[type="range"] { width: 100%; accent-color: var(--primary-blue); margin: 10px 0; }
+        .summary-table { width: 100%; border-collapse: collapse; font-size: 11px; margin-top: 10px; border-radius: 8px; overflow: hidden; }
+        .summary-table th { background: #e2e8f0; padding: 8px; color: #475569; text-align: center; }
+        .summary-table td { padding: 8px; border-bottom: 1px solid #f1f5f9; text-align: center; background: white; }
+
+        .btn-clear { 
+            background: #ef4444; 
+            color: white; 
+            border: none; 
+            padding: 12px; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            font-weight: 700; 
+            margin-top: auto; 
+            width: 100%;
+            transition: 0.2s;
+        }
+        .btn-clear:hover { background: #dc2626; box-shadow: 0 4px 6px -1px rgba(220, 38, 38, 0.3); }
+
+        input[type="range"] { 
+            width: 100%; 
+            accent-color: var(--primary-blue); 
+            margin: 15px 0; 
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <header>
-    <h2>BLUEPRINT <span style="color:#0f172a">PRO DESIGNER</span></h2>
+    <div class="brand">
+        <img src="unnamed.webp" alt="Logo">
+        <h2>BLUEPRINT <span>PRO</span></h2>
+    </div>
     <label class="upload-btn">
-        Upload Video
+        <span>+</span> بارگذاری ویدیو
         <input type="file" id="file" hidden accept="video/*">
     </label>
 </header>
@@ -69,7 +195,7 @@
     </div>
 
     <div class="sidebar">
-        <div class="section-title">SLIDE SELECTOR</div>
+        <div class="section-title">انتخاب اسلاید</div>
         <div class="tab-grid">
             <button class="tab active" onclick="changeSlide(1)">Slide 1</button>
             <button class="tab" onclick="changeSlide(2)">Slide 2</button>
@@ -80,31 +206,33 @@
         </div>
 
         <div id="layer-ui">
-            <div class="section-title">LAYER SELECTOR (SLIDE 1)</div>
+            <div class="section-title">انتخاب لایه (اسلاید ۱)</div>
             <div class="layer-box">
                 <button id="lA" class="layer-btn active lA" onclick="setLayer('A')">TEXT A</button>
                 <button id="lB" class="layer-btn lB" onclick="setLayer('B')">TEXT B</button>
             </div>
         </div>
 
-        <div class="section-title">COORDINATES (PX)</div>
+        <div class="section-title">مختصات (پیکسل)</div>
         <div class="data-grid">
-            <div class="data-card"><label>X (Anchor)</label><span id="outX">0</span></div>
-            <div class="data-card"><label>Y (Anchor)</label><span id="outY">0</span></div>
-            <div class="data-card"><label>WIDTH</label><span id="outW">0</span></div>
-            <div class="data-card"><label>HEIGHT</label><span id="outH">0</span></div>
+            <div class="data-card"><label>X Anchor</label><span id="outX">0</span></div>
+            <div class="data-card"><label>Y Anchor</label><span id="outY">0</span></div>
+            <div class="data-card"><label>Width</label><span id="outW">0</span></div>
+            <div class="data-card"><label>Height</label><span id="outH">0</span></div>
         </div>
 
-        <div class="section-title">TIMELINE</div>
+        <div class="section-title">خط زمان</div>
         <input type="range" id="seek" step="0.01" value="0">
         
-        <div class="section-title">GLOBAL SUMMARY</div>
-        <table class="summary-table">
-            <thead><tr><th>S</th><th>L</th><th>X</th><th>Y</th><th>W</th><th>H</th></tr></thead>
-            <tbody id="summary-body"></tbody>
-        </table>
+        <div class="section-title">خلاصه نهایی</div>
+        <div style="max-height: 150px; overflow-y: auto; border: 1px solid var(--border-color); border-radius: 8px;">
+            <table class="summary-table">
+                <thead><tr><th>S</th><th>L</th><th>X</th><th>Y</th><th>W</th><th>H</th></tr></thead>
+                <tbody id="summary-body"></tbody>
+            </table>
+        </div>
 
-        <button class="btn-clear" onclick="clearCurrent()">CLEAR LAYER</button>
+        <button class="btn-clear" onclick="clearCurrent()">پاک کردن لایه فعلی</button>
     </div>
 </div>
 
@@ -116,11 +244,16 @@
 
     document.getElementById('file').onchange = (e) => {
         const file = e.target.files[0];
+        if(!file) return;
         v.src = URL.createObjectURL(file);
         v.onloadedmetadata = () => {
-            c.width = v.clientWidth; c.height = v.clientHeight;
-            document.getElementById('seek').max = v.duration;
-            updateSummary();
+            // تنظیم ابعاد کانواس بر اساس اندازه نمایش ویدیو
+            setTimeout(() => {
+                c.width = v.clientWidth; 
+                c.height = v.clientHeight;
+                document.getElementById('seek').max = v.duration;
+                updateSummary();
+            }, 100);
         };
     };
 
@@ -139,7 +272,6 @@
         const curX = e.clientX - r.left;
         const curY = e.clientY - r.top;
 
-        // منطق Anchor Point واقعی: پیدا کردن گوشه بالا-چپ فارغ از جهت حرکت ماوس
         const realX = Math.min(startX, curX);
         const realY = Math.min(startY, curY);
         const realW = Math.abs(curX - startX);
@@ -148,18 +280,18 @@
         const scX = v.videoWidth / c.width;
         const scY = v.videoHeight / c.height;
 
-        drawAll(); // پاک کردن و کشیدن کادرهای قبلی
+        drawAll(); 
         
-        // ترسیم کادر فعلی با استایل Anchor Point
-        ctx.strokeStyle = currentLayer === 'A' ? "#00cc88" : "#ff00ff";
-        ctx.lineWidth = 2;
+        ctx.strokeStyle = currentLayer === 'A' ? "#10b981" : "#f472b6";
+        ctx.lineWidth = 3;
+        ctx.setLineDash([5, 3]); // خط‌چین برای کادر در حال ترسیم
         ctx.strokeRect(realX, realY, realW, realH);
+        ctx.setLineDash([]); 
         
-        // ترسیم نقطه Anchor
         ctx.fillStyle = "white";
-        ctx.fillRect(realX - 3, realY - 3, 6, 6);
+        ctx.fillRect(realX - 4, realY - 4, 8, 8);
+        ctx.strokeRect(realX - 4, realY - 4, 8, 8);
 
-        // ذخیره داده‌ها
         data[currentSlide][currentLayer] = {
             x: Math.round(realX * scX),
             y: Math.round(realY * scY),
@@ -170,7 +302,7 @@
         updateUI();
     };
 
-    c.onmouseup = () => { isDrawing = false; updateSummary(); };
+    c.onmouseup = () => { isDrawing = false; updateSummary(); drawAll(); };
 
     function drawAll() {
         ctx.clearRect(0, 0, c.width, c.height);
@@ -178,11 +310,15 @@
         ['A', 'B'].forEach(l => {
             const d = data[currentSlide][l];
             if(d.set) {
-                ctx.strokeStyle = l === 'A' ? "#00cc88" : "#ff00ff";
-                ctx.lineWidth = 1.5;
+                ctx.strokeStyle = l === 'A' ? "#10b981" : "#f472b6";
+                ctx.lineWidth = 2;
                 ctx.strokeRect(d.x/scX, d.y/scY, d.w/scX, d.h/scY);
-                ctx.fillStyle = l === 'A' ? "#00cc88" : "#ff00ff";
-                ctx.fillRect((d.x/scX)-2, (d.y/scY)-2, 4, 4);
+                // متن برچسب لایه
+                ctx.fillStyle = l === 'A' ? "#10b981" : "#f472b6";
+                ctx.font = "bold 10px sans-serif";
+                ctx.fillText(`Layer ${l}`, (d.x/scX), (d.y/scY) - 5);
+                // نقطه انکر
+                ctx.fillRect((d.x/scX)-3, (d.y/scY)-3, 6, 6);
             }
         });
     }
@@ -190,8 +326,9 @@
     function changeSlide(n) {
         currentSlide = n;
         document.querySelectorAll('.tab').forEach((t, i) => t.classList.toggle('active', i === n-1));
-        document.getElementById('layer-ui').style.visibility = (n === 1) ? 'visible' : 'hidden';
-        if(n !== 1) currentLayer = 'A';
+        document.getElementById('layer-ui').style.opacity = (n === 1) ? '1' : '0.4';
+        document.getElementById('layer-ui').style.pointerEvents = (n === 1) ? 'all' : 'none';
+        if(n !== 1) setLayer('A');
         drawAll(); updateUI();
     }
 
@@ -200,6 +337,7 @@
         document.getElementById('lA').classList.toggle('active', l==='A');
         document.getElementById('lB').classList.toggle('active', l==='B');
         updateUI();
+        drawAll();
     }
 
     function updateUI() {
@@ -226,6 +364,15 @@
         data[currentSlide][currentLayer] = {x:0,y:0,w:0,h:0,set:false};
         drawAll(); updateUI(); updateSummary();
     }
+
+    // ریسپانسیو کردن کانواس در صورت تغییر اندازه پنجره
+    window.onresize = () => {
+        if(v.src) {
+            c.width = v.clientWidth;
+            c.height = v.clientHeight;
+            drawAll();
+        }
+    };
 </script>
 </body>
 </html>
